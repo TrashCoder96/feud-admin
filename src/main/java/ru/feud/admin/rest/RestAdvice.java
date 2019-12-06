@@ -11,7 +11,7 @@ public class RestAdvice {
     @ExceptionHandler(FeudRestException.class)
     public ResponseEntity<ErrorMessageRo> feudException(FeudRestException ex) {
         return ResponseEntity.status(ex.getHttpStatus().value())
-                .body(new ErrorMessageRo().setStatus(ex.getHttpStatus().value()).setMessage(ex.getMessage()));
+            .body(new ErrorMessageRo().setStatus(ex.getHttpStatus().value()).setMessage(ex.getMessage()));
     }
 
 }

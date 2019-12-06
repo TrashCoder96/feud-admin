@@ -26,29 +26,23 @@ public class BasicTest {
     @Autowired
     protected GameRepository gameRepository;
 
-    @BeforeEach
-    public void cleanDb() {
-        gameRepository.deleteAll();
+    public Game validGame() throws JsonProcessingException {
+        return new Game().setBody(objectMapper.writeValueAsString(validGameRo()));
     }
 
     public GameRo validGameRo() {
         GameRo gameRo = new GameRo()
-                .setDescription("desc");
+            .setDescription("desc");
         QuestionRo questionRo = new QuestionRo()
-                .setText("quest");
+            .setText("quest");
         AnswerRo answerRo = new AnswerRo()
-                .setText("answer")
-                .setScore(10);
+            .setText("answer")
+            .setScore(10);
         gameRo.setQuestions(new ArrayList<>());
         gameRo.getQuestions().add(questionRo);
         questionRo.setAnswers(new ArrayList<>());
         questionRo.getAnswers().add(answerRo);
         return gameRo;
     }
-
-    public Game validGame() throws JsonProcessingException {
-        return new Game().setBody(objectMapper.writeValueAsString(validGameRo()));
-    }
-
 
 }
