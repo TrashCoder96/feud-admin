@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="COMMON" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{ISO8601} [%X{SOURCE_APP}] [%t] %-5p %c{1} [%X{sessionId}] [%X{requestIp}] - %m%n%ex</pattern>
+			<immediateFlush>true</immediateFlush>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="COMMON" />
+	</root>
+
+</configuration>

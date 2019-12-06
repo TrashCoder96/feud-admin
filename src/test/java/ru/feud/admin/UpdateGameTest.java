@@ -30,7 +30,7 @@ public class UpdateGameTest extends BasicTest {
                 .setId(id)
                 .setDescription("newdesc")))))
             .andExpect(status().isOk());
-        assertEquals("newdesc", objectMapper.readValue(gameRepository.getOne(1L).getBody(), GameRo.class).getDescription());
+        assertEquals("newdesc", objectMapper.readValue(gameRepository.getOne(id).getBody(), GameRo.class).getDescription());
     }
 
 }
