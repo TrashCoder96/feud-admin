@@ -1,6 +1,5 @@
 package ru.feud.admin.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import ru.feud.admin.rest.ro.GameRo;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,10 +42,12 @@ public class GameService {
         try {
             Game gameDto = gameRepository.getOne(game.getId());
             if (gameDto == null) {
-                throw new FeudRestException(HttpStatus.BAD_REQUEST, "Game not found");
+                throw new FeudRestException(HttpStatus.NOT_FOUND, "Game not found");
             }
             gameDto.setBody(objectMapper.writeValueAsString(game.setId(null).setKey(null)));
             gameRepository.save(gameDto);
+        } catch (FeudRestException fre) {
+            throw fre;
         } catch (Exception e) {
             throw new FeudRestException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error");
         }
@@ -55,8 +55,14 @@ public class GameService {
 
     @Transactional
     public void deleteGame(Long id) {
-        gameRepository.findById(id).orElseThrow(() -> new FeudRestException(HttpStatus.BAD_REQUEST, "Game not found"));
-        gameRepository.deleteById(id);
+        try {
+            gameRepository.findById(id).orElseThrow(() -> new FeudRestException(HttpStatus.NOT_FOUND, "Game not found"));
+            gameRepository.deleteById(id);
+        } catch (FeudRestException fre) {
+            throw fre;
+        } catch (Exception e) {
+            throw new FeudRestException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error");
+        }
     }
 
     @Transactional
@@ -75,10 +81,12 @@ public class GameService {
     @Transactional
     public GameRo getGame(Long id) {
         try {
-            Game gameDto = gameRepository.findById(id).orElseThrow(() -> new FeudRestException(HttpStatus.BAD_REQUEST, "Game not found"));
+            Game gameDto = gameRepository.findById(id).orElseThrow(() -> new FeudRestException(HttpStatus.NOT_FOUND, "Game not found"));
             return objectMapper.readValue(gameDto.getBody(), GameRo.class)
                 .setId(gameDto.getId())
                 .setKey(gameDto.getKey());
+        } catch (FeudRestException fre) {
+            throw fre;
         } catch (Exception e) {
             throw new FeudRestException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error");
         }
@@ -92,10 +100,12 @@ public class GameService {
                 GameRo ro = objectMapper.readValue(gameDtos.get(0).getBody(), GameRo.class);
                 return ro.setKey(gameDtos.get(0).getKey()).setId(gameDtos.get(0).getId());
             } else if (gameDtos.size() == 0) {
-                throw new FeudRestException(HttpStatus.BAD_REQUEST, "Game not found");
+                throw new FeudRestException(HttpStatus.NOT_FOUND, "Game not found");
             } else {
                 throw new FeudRestException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error");
             }
+        } catch (FeudRestException fre) {
+            throw fre;
         } catch (Exception e) {
             throw new FeudRestException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error");
         }

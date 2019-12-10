@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.feud.admin.rest.ro.CreateRequest;
-import ru.feud.admin.rest.ro.GetRequest;
 import ru.feud.admin.rest.ro.ListResponse;
 import ru.feud.admin.rest.ro.OneGameResponse;
 import ru.feud.admin.rest.ro.UpdateRequest;
