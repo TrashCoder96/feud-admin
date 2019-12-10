@@ -89,7 +89,8 @@ public class GameService {
         try {
             List<Game> gameDtos = gameRepository.findByKey(key);
             if (gameDtos.size() == 1) {
-                return objectMapper.readValue(gameDtos.get(0).getBody(), GameRo.class);
+                GameRo ro = objectMapper.readValue(gameDtos.get(0).getBody(), GameRo.class);
+                return ro.setKey(gameDtos.get(0).getKey()).setId(gameDtos.get(0).getId());
             } else if (gameDtos.size() == 0) {
                 throw new FeudRestException(HttpStatus.BAD_REQUEST, "Game not found");
             } else {
