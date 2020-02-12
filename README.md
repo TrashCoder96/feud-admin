@@ -3,7 +3,7 @@
 How to compile:
 
 1. Download and install Apache Maven from https://maven.apache.org/
-2. Inside root folder run command `mvn package -DskipTests`
+2. Run command `mvn package -DskipTests` inside root
 3. You can detect jar inside target folder. This jar can be used for developing and explotation in production environment
 4. Application has prod and default profiles. Default profile uses h2 for local explotation. Prod profile uses settings for PostgreSQL.
 See here https://www.baeldung.com/spring-profiles for more information.
